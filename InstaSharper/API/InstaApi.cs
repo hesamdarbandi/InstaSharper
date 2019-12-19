@@ -359,11 +359,11 @@ namespace InstaSharper.API
         /// <returns>
         ///     <see cref="T:InstaSharper.Classes.Models.InstaDirectInboxContainer" />
         /// </returns>
-        public async Task<IResult<InstaDirectInboxContainer>> GetDirectInboxAsync()
+        public async Task<IResult<InstaDirectInboxContainer>> GetDirectInboxAsync(string cursorId = null)
         {
             ValidateUser();
             ValidateLoggedIn();
-            return await _messagingProcessor.GetDirectInboxAsync();
+            return await _messagingProcessor.GetDirectInboxAsync(cursorId);
         }
 
         /// <summary>

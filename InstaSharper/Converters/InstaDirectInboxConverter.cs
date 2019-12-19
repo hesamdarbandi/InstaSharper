@@ -28,7 +28,8 @@ namespace InstaSharper.Converters
                 {
                     HasOlder = SourceObject.Inbox.HasOlder,
                     UnseenCount = SourceObject.Inbox.UnseenCount,
-                    UnseenCountTs = SourceObject.Inbox.UnseenCountTs
+                    UnseenCountTs = SourceObject.Inbox.UnseenCountTs,
+                    NextId = SourceObject.Inbox.NextId
                 };
 
                 if (SourceObject.Inbox.Threads != null && SourceObject.Inbox.Threads.Count > 0)

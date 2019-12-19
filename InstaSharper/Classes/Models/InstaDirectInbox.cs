@@ -10,6 +10,8 @@ namespace InstaSharper.Classes.Models
 
         public long UnseenCount { get; set; }
 
+        public string NextId{get;set;}
+
         public List<InstaDirectInboxThread> Threads { get; set; }
     }
 }

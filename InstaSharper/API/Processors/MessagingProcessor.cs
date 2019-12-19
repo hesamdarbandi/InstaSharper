@@ -34,7 +34,7 @@ namespace InstaSharper.API.Processors
             _logger = logger;
         }
 
-        public async Task<IResult<InstaDirectInboxContainer>> GetDirectInboxAsync()
+        public async Task<IResult<InstaDirectInboxContainer>> GetDirectInboxAsync(string cursorId = null)
         {
             try
             {
