@@ -237,12 +237,14 @@ namespace InstaSharper.Helpers
                : instaUri;
         }
 
-        public static Uri GetDirectInboxThreadUri(string threadId)
+        public static Uri GetDirectInboxThreadUri(string threadId, string nextId = null)
         {
             if (
                 !Uri.TryCreate(BaseInstagramUri, string.Format(InstaApiConstants.GET_DIRECT_THREAD, threadId),
                     out var instaUri)) throw new Exception("Cant create URI for get inbox thread by id");
-            return instaUri;
+            return !string.IsNullOrEmpty(nextId)
+             ? new UriBuilder(instaUri) { Query = $"cursor={nextId}" }.Uri
+             : instaUri;
         }
 
         public static Uri GetUserTagsUri(long userPk, string rankToken, string maxId = null)

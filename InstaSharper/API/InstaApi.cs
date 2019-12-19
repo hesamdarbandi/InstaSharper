@@ -373,11 +373,11 @@ namespace InstaSharper.API
         /// <returns>
         ///     <see cref="T:InstaSharper.Classes.Models.InstaDirectInboxThread" />
         /// </returns>
-        public async Task<IResult<InstaDirectInboxThread>> GetDirectInboxThreadAsync(string threadId)
+        public async Task<IResult<InstaDirectInboxThread>> GetDirectInboxThreadAsync(string threadId, string cursorId = null)
         {
             ValidateUser();
             ValidateLoggedIn();
-            return await _messagingProcessor.GetDirectInboxThreadAsync(threadId);
+            return await _messagingProcessor.GetDirectInboxThreadAsync(threadId, cursorId);
         }
 
         /// <summary>

@@ -56,11 +56,11 @@ namespace InstaSharper.API.Processors
             }
         }
 
-        public async Task<IResult<InstaDirectInboxThread>> GetDirectInboxThreadAsync(string threadId)
+        public async Task<IResult<InstaDirectInboxThread>> GetDirectInboxThreadAsync(string threadId, string cursorId = null)
         {
             try
             {
-                var directInboxUri = UriCreator.GetDirectInboxThreadUri(threadId);
+                var directInboxUri = UriCreator.GetDirectInboxThreadUri(threadId, cursorId);
                 var request = HttpHelper.GetDefaultRequest(HttpMethod.Get, directInboxUri, _deviceInfo);
                 var response = await _httpRequestProcessor.SendAsync(request);
                 var json = await response.Content.ReadAsStringAsync();
@@ -158,7 +158,7 @@ namespace InstaSharper.API.Processors
             }
 
         }
-     
+
         public async Task<IResult<InstaDirectInboxThreadList>> SendLinkMessage(InstaMessageLink message, params string[] threads)
         {
             var threadList = new InstaDirectInboxThreadList();

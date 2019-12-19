@@ -8,7 +8,7 @@ namespace InstaSharper.API.Processors
     public interface IMessagingProcessor
     {
         Task<IResult<InstaDirectInboxContainer>> GetDirectInboxAsync(string cursorId = null);
-        Task<IResult<InstaDirectInboxThread>> GetDirectInboxThreadAsync(string threadId);
+        Task<IResult<InstaDirectInboxThread>> GetDirectInboxThreadAsync(string threadId, string cursorId = null);
         Task<IResult<InstaDirectInboxThreadList>> SendDirectMessage(string recipients, string threadIds, string text);
         Task<IResult<InstaRecipients>> GetRecentRecipientsAsync();
         Task<IResult<InstaRecipients>> GetRankedRecipientsAsync();
