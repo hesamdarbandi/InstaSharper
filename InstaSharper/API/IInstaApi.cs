@@ -263,11 +263,19 @@ namespace InstaSharper.API
         Task<IResult<InstaDirectInboxThreadList>> SendDirectMessage(string recipients, string threadIds, string text);
 
         /// <summary>
+        ///     Send direct phot to provided users and threads
+        /// </summary>
+        /// <param name="recipients">Comma-separated users PK</param>
+        /// <param name="image">Message image</param>
+        Task<IResult<InstaDirectInboxThreadList>> SendDirectPhoto(string recipients, InstaImage image);
+
+        /// <summary>
         ///     Get recent recipients (threads and users) asynchronously
         /// </summary>
         /// <returns>
         ///     <see cref="InstaRecipients" />
         /// </returns>
+
         Task<IResult<InstaRecipients>> GetRecentRecipientsAsync();
 
         /// <summary>

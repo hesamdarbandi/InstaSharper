@@ -25,9 +25,9 @@ namespace InstaSharper.API
         public const string HEADER_COUNT = "count";
         public const string HEADER_EXCLUDE_LIST = "exclude_list";
 
-         public const string
-            IG_SIGNATURE_KEY =
-                "99e16edcca71d7c1f3fd74d447f6281bd5253a623000a55ed0b60014467a53b1";
+        public const string
+           IG_SIGNATURE_KEY =
+               "99e16edcca71d7c1f3fd74d447f6281bd5253a623000a55ed0b60014467a53b1";
 
         public const string HEADER_IG_SIGNATURE = "signed_body";
         public const string IG_SIGNATURE_KEY_VERSION = "4";
@@ -47,8 +47,8 @@ namespace InstaSharper.API
         public const int TIMEZONE_OFFSET = 3600; // GMT +1
         public const string VEFITY_CHOICE = "choice";
         public const string SECURITY_CODE = "security_code";
-        
-            
+
+
         public const string INSTAGRAM_URL = "https://i.instagram.com";
         public const string API = "/api";
         public const string API_SUFFIX = API + API_VERSION;
@@ -79,7 +79,7 @@ namespace InstaSharper.API
         public const string RESET_CHALLENGE = API_SUFFIX + "/challenge/reset/{0}";
         public const string VERIFY_METHOD = API_SUFFIX + "/challenge/{0}";
         public const string FB_SEARCH_PLACE = API_SUFFIX + "/fbsearch/places/?count={0}&query={1}&rank_token={2}";
-        
+
         public const string GET_LIST_COLLECTIONS = API_SUFFIX + "/collections/list/";
         public const string GET_COLLECTION = API_SUFFIX + "/feed/collection/{0}/";
         public const string CREATE_COLLECTION = API_SUFFIX + "/collections/create/";
@@ -95,6 +95,7 @@ namespace InstaSharper.API
         public const string GET_DIRECT_THREAD = API_SUFFIX + "/direct_v2/threads/{0}";
         public const string GET_DIRECT_INBOX = API_SUFFIX + "/direct_v2/inbox/";
         public const string GET_DIRECT_TEXT_BROADCAST = API_SUFFIX + "/direct_v2/threads/broadcast/text/";
+        public const string SEND_DIRECT_PHOTO = API_SUFFIX + "/direct_v2/threads/broadcast/upload_photo/";
         public const string GET_DIRECT_LINK_BROADCAST = API_SUFFIX + "/direct_v2/threads/broadcast/link/";
         public const string GET_DIRECT_MEDIA_SHARE_BROADCAST = API_SUFFIX + "/direct_v2/threads/broadcast/media_share/";
         public const string GET_DIRECT_DECLINE_ALL = API_SUFFIX + "/direct_v2/threads/decline_all/";

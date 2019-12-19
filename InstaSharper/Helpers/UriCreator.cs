@@ -214,6 +214,13 @@ namespace InstaSharper.Helpers
             return instaUri;
         }
 
+        public static Uri GetDirectPhotoUri()
+        {
+            if (!Uri.TryCreate(BaseInstagramUri, InstaApiConstants.SEND_DIRECT_PHOTO, out var instaUri))
+                throw new Exception("Cant create URI for send direct photo");
+            return instaUri;
+        }
+
         public static Uri GetDeclineAllPendingThreadsUri()
         {
             if (!Uri.TryCreate(BaseInstagramUri, InstaApiConstants.GET_DIRECT_DECLINE_ALL, out var instaUri))

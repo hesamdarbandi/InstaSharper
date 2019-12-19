@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -113,6 +114,51 @@ namespace InstaSharper.API.Processors
             }
         }
 
+        public async Task<IResult<InstaDirectInboxThreadList>> SendDirectPhoto(string recipients, InstaImage image)
+        {
+
+            var threads = new InstaDirectInboxThreadList();
+            try
+            {
+                var directUri = UriCreator.GetDirectPhotoUri();
+                var uploadId = ApiRequestMessage.GenerateUploadId();
+                var requestContent = new MultipartFormDataContent(uploadId)
+                {
+                    {new StringContent("[[" + recipients + "]]"), "\"recipient_users\"" },
+                    {new StringContent("send_item"), "\"action\"" },
+                    {new StringContent(uploadId), "\"upload_id\""},
+                    {new StringContent(_deviceInfo.DeviceGuid.ToString()), "\"_uuid\""},
+                    {new StringContent(_user.CsrfToken), "\"_csrftoken\""},
+                    {
+                        new StringContent("{\"lib_name\":\"jt\",\"lib_version\":\"1.3.0\",\"quality\":\"87\"}"),
+                        "\"image_compression\""
+                    }
+                };
+
+                var imageContent = new ByteArrayContent(File.ReadAllBytes(image.URI));
+                imageContent.Headers.Add("Content-Transfer-Encoding", "binary");
+                imageContent.Headers.Add("Content-Type", "application/octet-stream");
+                requestContent.Add(imageContent, "photo", $"send_media_{ApiRequestMessage.GenerateUploadId()}.jpg");
+                var request = HttpHelper.GetDefaultRequest(HttpMethod.Post, directUri, _deviceInfo);
+                request.Content = requestContent;
+                var response = await _httpRequestProcessor.SendAsync(request);
+                var json = await response.Content.ReadAsStringAsync();
+                if (response.StatusCode != HttpStatusCode.OK)
+                    return Result.UnExpectedResponse<InstaDirectInboxThreadList>(response, json);
+                var result = JsonConvert.DeserializeObject<InstaSendDirectMessageResponse>(json);
+                if (!result.IsOk()) return Result.Fail<InstaDirectInboxThreadList>(result.Status);
+                threads.AddRange(result.Threads.Select(thread =>
+                        ConvertersFabric.Instance.GetDirectThreadConverter(thread).Convert()));
+                return Result.Success(threads);
+            }
+            catch (Exception exception)
+            {
+                _logger?.LogException(exception);
+                return Result.Fail<InstaDirectInboxThreadList>(exception);
+            }
+
+        }
+     
         public async Task<IResult<InstaDirectInboxThreadList>> SendLinkMessage(InstaMessageLink message, params string[] threads)
         {
             var threadList = new InstaDirectInboxThreadList();
