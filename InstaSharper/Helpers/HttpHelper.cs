@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Security.Cryptography;
 using InstaSharper.API;
 using InstaSharper.Classes.Android.DeviceInfo;
 using Newtonsoft.Json;
@@ -21,6 +22,16 @@ namespace InstaSharper.Helpers
                 deviceInfo.GoogleAdId.ToString()));
             return request;
         }
+
+        public static Guid GenUuid()
+        {
+            var data = new byte[16];
+            var generator = new RNGCryptoServiceProvider();
+            generator.GetBytes(data);
+            data.AddVariantMarker().AddVersionMarker();
+            return new Guid(data);
+        }
+
 
         public static HttpRequestMessage GetSignedRequest(HttpMethod method,
             Uri uri,

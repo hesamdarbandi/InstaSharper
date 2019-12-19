@@ -425,8 +425,8 @@ namespace InstaSharper.API.Processors
                     {
                         "device", new JObject
                         {
-                            {"manufacturer", _deviceInfo.HardwareManufacturer},
-                            {"model", _deviceInfo.HardwareModel},
+                            {"manufacturer", _deviceInfo.Manufacturer},
+                            {"model", _deviceInfo.Model},
                             {"android_version", androidVersion.VersionNumber},
                             {"android_release", androidVersion.APILevel}
                         }

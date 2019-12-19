@@ -25,9 +25,9 @@ namespace InstaSharper.API
         public const string HEADER_COUNT = "count";
         public const string HEADER_EXCLUDE_LIST = "exclude_list";
 
-        public const string
+         public const string
             IG_SIGNATURE_KEY =
-                "153cab3b94f8e6a1c0711202b5f1c7064e4718cad09a3004d5e57ef3d919012a";
+                "99e16edcca71d7c1f3fd74d447f6281bd5253a623000a55ed0b60014467a53b1";
 
         public const string HEADER_IG_SIGNATURE = "signed_body";
         public const string IG_SIGNATURE_KEY_VERSION = "4";
