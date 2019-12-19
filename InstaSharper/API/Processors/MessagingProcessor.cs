@@ -86,14 +86,14 @@ namespace InstaSharper.API.Processors
                 var request = HttpHelper.GetDefaultRequest(HttpMethod.Post, directSendMessageUri, _deviceInfo);
                 var fields = new Dictionary<string, string>
                 {
-                    {"link_text", message.Text}, 
+                    {"link_text", message.Text},
                     {"link_urls", $"[\"{message.Url}\"]"},
                     {"action", "send_item"}
                 };
 
                 if (recipients == null || recipients.Length < 1)
                     return Result.Fail<InstaDirectInboxThreadList>("Please provide at least one recipient.");
-                    
+
                 fields.Add("recipient_users", "[[" + string.Join(",", recipients) + "]]");
                 request.Content = new FormUrlEncodedContent(fields);
                 var response = await _httpRequestProcessor.SendAsync(request);
@@ -112,7 +112,7 @@ namespace InstaSharper.API.Processors
                 return Result.Fail<InstaDirectInboxThreadList>(exception);
             }
         }
-        
+
         public async Task<IResult<InstaDirectInboxThreadList>> SendLinkMessage(InstaMessageLink message, params string[] threads)
         {
             var threadList = new InstaDirectInboxThreadList();
@@ -122,13 +122,13 @@ namespace InstaSharper.API.Processors
                 var request = HttpHelper.GetDefaultRequest(HttpMethod.Post, directSendMessageUri, _deviceInfo);
                 var fields = new Dictionary<string, string>
                 {
-                    {"link_text", message.Text}, 
+                    {"link_text", message.Text},
                     {"link_urls", $"[\"{message.Url}\"]"},
                     {"action", "send_item"}
                 };
 
                 if (threads == null || threads.Length < 1)
-                 return Result.Fail<InstaDirectInboxThreadList>("Please provide at least one recipient.");
+                    return Result.Fail<InstaDirectInboxThreadList>("Please provide at least one recipient.");
                 fields.Add("thread_ids", "[" + string.Join(",", threads) + "]");
 
                 request.Content = new FormUrlEncodedContent(fields);
@@ -150,7 +150,7 @@ namespace InstaSharper.API.Processors
         }
 
         public async Task<IResult<InstaDirectInboxThreadList>> ShareMedia(string mediaId, InstaMediaType mediaType,
-            params string[] threads)
+           string recipients, params string[] threads)
         {
             var threadList = new InstaDirectInboxThreadList();
             try
@@ -159,7 +159,7 @@ namespace InstaSharper.API.Processors
                 var request = HttpHelper.GetDefaultRequest(HttpMethod.Post, directSendMessageUri, _deviceInfo);
                 var fields = new Dictionary<string, string>
                 {
-                    {"media_id", mediaId}, 
+                    {"media_id", mediaId},
                     {"unified_broadcast_format", "1"},
                     {"action", "send_item"}
                 };
@@ -167,6 +167,11 @@ namespace InstaSharper.API.Processors
                 if (threads == null || threads.Length < 1)
                     return Result.Fail<InstaDirectInboxThreadList>("Please provide at least one thread.");
                 fields.Add("thread_ids", "[" + string.Join(",", threads) + "]");
+
+                if (!string.IsNullOrEmpty(recipients))
+                {
+                    fields.Add("recipient_users", "[[" + string.Join(",", recipients) + "]]");
+                }
 
                 request.Content = new FormUrlEncodedContent(fields);
                 var response = await _httpRequestProcessor.SendAsync(request);
@@ -223,7 +228,7 @@ namespace InstaSharper.API.Processors
                 return Result.Fail<InstaDirectInboxThreadList>(exception);
             }
         }
-        
+
         public async Task<IResult<BaseStatusResponse>> DeclineAllPendingDirectThreads()
         {
             try
@@ -235,8 +240,8 @@ namespace InstaSharper.API.Processors
                 if (response.StatusCode != HttpStatusCode.OK)
                     return Result.UnExpectedResponse<BaseStatusResponse>(response, json);
                 var result = JsonConvert.DeserializeObject<BaseStatusResponse>(json);
-                return !result.IsOk() 
-                    ? Result.Fail<BaseStatusResponse>(result.Status) 
+                return !result.IsOk()
+                    ? Result.Fail<BaseStatusResponse>(result.Status)
                     : Result.Success(result);
             }
             catch (Exception exception)
@@ -245,7 +250,7 @@ namespace InstaSharper.API.Processors
                 return Result.Fail<BaseStatusResponse>(exception);
             }
         }
-        
+
         public async Task<IResult<BaseStatusResponse>> ApprovePendingDirectThread(string threadId)
         {
             try
@@ -257,8 +262,8 @@ namespace InstaSharper.API.Processors
                 if (response.StatusCode != HttpStatusCode.OK)
                     return Result.UnExpectedResponse<BaseStatusResponse>(response, json);
                 var result = JsonConvert.DeserializeObject<BaseStatusResponse>(json);
-                return !result.IsOk() 
-                    ? Result.Fail<BaseStatusResponse>(result.Status) 
+                return !result.IsOk()
+                    ? Result.Fail<BaseStatusResponse>(result.Status)
                     : Result.Success(result);
             }
             catch (Exception exception)

@@ -272,11 +272,11 @@ namespace InstaSharper.API
         /// <param name="threads">Array of threads, thread id like "111182366841710300949128137443944311111"</param>
         /// <returns>Affected threads</returns>
         public async Task<IResult<InstaDirectInboxThreadList>> ShareMedia(string mediaId, InstaMediaType mediaType,
-            params string[] threads)
+            string recipients, params string[] threads)
         {
             ValidateUser();
             ValidateLoggedIn();
-            return await _messagingProcessor.ShareMedia(mediaId, mediaType, threads);
+            return await _messagingProcessor.ShareMedia(mediaId, mediaType, recipients, threads);
         }
 
         /// <summary>
@@ -348,7 +348,7 @@ namespace InstaSharper.API
             ValidateLoggedIn();
             var user = await GetUserAsync(username);
             if (!user.Succeeded)
-                return Result.Fail($"Unable to get user {username} to get tags", (InstaMediaList) null);
+                return Result.Fail($"Unable to get user {username} to get tags", (InstaMediaList)null);
             return await _userProcessor.GetUserTagsAsync(user.Value.Pk, paginationParameters);
         }
 
@@ -932,7 +932,7 @@ namespace InstaSharper.API
             ValidateLoggedIn();
             return await _hashtagProcessor.GetHashtagInfo(tagname);
         }
-        
+
         #region Authentication/State data
 
         /// <summary>
@@ -967,8 +967,8 @@ namespace InstaSharper.API
                 var request = HttpHelper.GetSignedRequest(HttpMethod.Post, instaUri, _deviceInfo, postData);
                 var response = await _httpRequestProcessor.SendAsync(request);
                 var json = await response.Content.ReadAsStringAsync();
-                return response.StatusCode != HttpStatusCode.OK 
-                    ? Result.UnExpectedResponse<CreationResponse>(response, json) 
+                return response.StatusCode != HttpStatusCode.OK
+                    ? Result.UnExpectedResponse<CreationResponse>(response, json)
                     : Result.Success(JsonConvert.DeserializeObject<CreationResponse>(json));
             }
             catch (Exception exception)
@@ -1039,7 +1039,7 @@ namespace InstaSharper.API
                         //Challenge is Required!
                         return Result.Fail("Challenge is required", InstaLoginResult.ChallengeRequired);
                     }
-                    
+
                     return Result.UnExpectedResponse<InstaLoginResult>(response, json);
                 }
 
@@ -1079,7 +1079,7 @@ namespace InstaSharper.API
             var fbSeachPlaceResponse = JsonConvert.DeserializeObject<FbSearchPlaceResponse>(json);
             return Result.Success(fbSeachPlaceResponse);
         }
-        
+
         /// <summary>
         ///     Reset challenge asynchronously
         /// </summary>
@@ -1105,7 +1105,7 @@ namespace InstaSharper.API
             var resetChallengeResponse = JsonConvert.DeserializeObject<InstaResetChallenge>(json);
             return Result.Success(resetChallengeResponse);
         }
-        
+
         /// <summary>
         ///    Get verify method asynchronously
         /// </summary>
@@ -1150,7 +1150,7 @@ namespace InstaSharper.API
             var resetChallengeResponse = JsonConvert.DeserializeObject<InstaResetChallenge>(json);
             return Result.Success(resetChallengeResponse);
         }
-        
+
         /// <summary>
         ///     Send verify code asynchronously
         /// </summary>
@@ -1172,7 +1172,7 @@ namespace InstaSharper.API
                 InstaApiConstants.IG_SIGNATURE_KEY_VERSION);
             var response = await _httpRequestProcessor.SendAsync(request);
             var json = await response.Content.ReadAsStringAsync();
-            if (response.StatusCode != HttpStatusCode.OK )
+            if (response.StatusCode != HttpStatusCode.OK)
             {
                 return Result.Fail<InstaResetChallenge>("invalid verify code");
             }
@@ -1183,7 +1183,7 @@ namespace InstaSharper.API
             _user.RankToken = $"{_user.LoggedInUder.Pk}_{_httpRequestProcessor.RequestMessage.phone_id}";
             return Result.Success(sendVerifyCodeResponse);
         }
-        
+
         /// <summary>
         ///     2-Factor Authentication Login using a verification code
         ///     Before call this method, please run LoginAsync first.

@@ -61,7 +61,7 @@ namespace InstaSharper.API
         /// </summary>
         Task<IResult<FbSearchPlaceResponse>> SearchPlace(string searchQuery, int count = 5);
 
-        
+
         /// <summary>
         ///     Reset challenge asynchronously
         /// </summary>
@@ -81,7 +81,7 @@ namespace InstaSharper.API
         ///     Send verify code asynchronously
         /// </summary>
         Task<IResult<InstaResetChallenge>> SendVerifyCode(string securityCode);
-        
+
         /// <summary>
         ///     2-Factor Authentication Login using a verification code
         ///     Before call this method, please run LoginAsync first.
@@ -604,7 +604,7 @@ namespace InstaSharper.API
         /// <param name="recipients">Array of recipients, user pk like "123123123"</param>
         /// <returns>Affected threads</returns>
         Task<IResult<InstaDirectInboxThreadList>> SendLinkMessage(InstaMessageLink message, params long[] recipients);
-        
+
         /// <summary>
         /// Send link as a message
         /// </summary>
@@ -621,7 +621,7 @@ namespace InstaSharper.API
         /// <param name="threads">Array of threads, thread id e.g. "111182366841710300949128137443944311111"</param>
         /// <returns>Affected threads</returns>
         Task<IResult<InstaDirectInboxThreadList>> ShareMedia(string mediaId, InstaMediaType mediaType,
-            params string[] threads);
+            string recipients, params string[] threads);
 
         /// <summary>
         /// Decline ALL pending threads

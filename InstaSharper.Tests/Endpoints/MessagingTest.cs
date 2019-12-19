@@ -39,7 +39,7 @@ namespace InstaSharper.Tests.Endpoints
             Assert.NotNull(result.Value);
             Assert.True(result.Value.Count > 0);
         }
-        
+
         [Theory]
         [InlineData("340282366841710300949128137443944319108")]
         public async Task SendDirectLinkMessageThreadTest(string threadId)
@@ -50,24 +50,24 @@ namespace InstaSharper.Tests.Endpoints
                 Url = "google.com",
                 Text = "This is link description"
             };
-            
+
             var result =
                 await _authInfo.ApiInstance.SendLinkMessage(message, threadId);
             Assert.True(result.Succeeded);
             Assert.NotNull(result.Value);
             Assert.True(result.Value.Count > 0);
         }
-        
+
         [Fact]
         public async Task DeclineAllThreadsTest()
         {
             Assert.True(_authInfo.ApiInstance.IsUserAuthenticated);
-            
+
             var result = await _authInfo.ApiInstance.DeclineAllPendingDirectThreads();
             Assert.True(result.Succeeded);
             Assert.True(result.Value.IsOk());
         }
-        
+
         [Theory]
         [InlineData("340282366841710300949128137443944319108")]
         public async Task ApprovePendingThreadTest(string threadId)
@@ -77,7 +77,7 @@ namespace InstaSharper.Tests.Endpoints
             Assert.True(result.Succeeded);
             Assert.True(result.Value.IsOk());
         }
-        
+
         [Theory]
         [InlineData("340282366841710300949128137443944319108")]
         public async Task SendPhotoShareTest(string threadId)
@@ -85,12 +85,12 @@ namespace InstaSharper.Tests.Endpoints
             Assert.True(_authInfo.ApiInstance.IsUserAuthenticated);
             const string mediaId = "1866111698328767752_3255807";
             var result =
-                await _authInfo.ApiInstance.ShareMedia(mediaId, InstaMediaType.Image, threadId);
+                await _authInfo.ApiInstance.ShareMedia(mediaId, InstaMediaType.Image, "some recipinet id", threadId);
             Assert.True(result.Succeeded);
             Assert.NotNull(result.Value);
             Assert.True(result.Value.Count > 0);
         }
-        
+
         [Theory]
         [InlineData("340282366841710300949128137443944319108")]
         public async Task SendVideoShareTest(string threadId)
@@ -103,7 +103,7 @@ namespace InstaSharper.Tests.Endpoints
             Assert.NotNull(result.Value);
             Assert.True(result.Value.Count > 0);
         }
-        
+
         [Theory]
         [InlineData(196754384)]
         public async Task SendDirectLinkMessageUserTest(long userPk)
@@ -114,7 +114,7 @@ namespace InstaSharper.Tests.Endpoints
                 Url = "youtube.com",
                 Text = "YouTube here"
             };
-            
+
             var result =
                 await _authInfo.ApiInstance.SendLinkMessage(message, userPk);
             Assert.True(result.Succeeded);
